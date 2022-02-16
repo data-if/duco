@@ -103,7 +103,6 @@ def main():
         st.button("Find data")
         response = requests.get(f"{url}/miners/{username}").json()
         if response['success']:
-            st.subheader("Historic prices")
             st.table(pd.json_normalize(response['result']))
         else:
             st.table(pd.json_normalize(response))
