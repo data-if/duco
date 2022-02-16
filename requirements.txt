@@ -1,0 +1,2 @@
+# Streamlit
+streamlit==1.5.1  # https://streamlit.io/
