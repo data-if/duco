@@ -102,8 +102,11 @@ def main():
         username = st.text_input("Input username:", "revox")
         st.button("Find data")
         response = requests.get(f"{url}/miners/{username}").json()
-        df = pd.json_normalize(response['result'])
-        st.table(df)
+        if response['success']:
+            st.subheader("Historic prices")
+            st.table(pd.json_normalize(response['result']))
+        else:
+            st.table(pd.json_normalize(response))
 
     elif type_r[:1] == "4":
         st.subheader("Balance by username")
