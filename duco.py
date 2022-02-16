@@ -53,7 +53,7 @@ def main():
             st.subheader("User miners")
             st.table(df_min)
             st.subheader("User transactions")
-            st.table(df_tr)
+            st.table(df_tr.sort_values(by='datetime', ascending=False))
 
         elif type_u[:1] == "2":
             st.write("Under construction ... 🚧")
@@ -79,7 +79,7 @@ def main():
             st.button("Find data")
             response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
             df = pd.json_normalize(response['result'])
-            st.table(df)
+            st.table(df.sort_values(by='datetime', ascending=False))
 
         elif type_tr[:1] == "2":
             st.subheader("Transaction by id")
