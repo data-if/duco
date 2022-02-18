@@ -47,13 +47,17 @@ def main():
 
             df_bal = pd.json_normalize(response['result']['balance'])
             df_min = pd.json_normalize(response['result']['miners'])
+            df_min.index += 1
             df_tr = pd.json_normalize(response['result']['transactions'])
+            df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+            df_tr.index += 1
+
             st.subheader("Balance")
             st.table(df_bal)
             st.subheader("User miners")
             st.table(df_min)
             st.subheader("User transactions")
-            st.table(df_tr.sort_values(by='datetime', ascending=False))
+            st.table(df_tr)
 
         elif type_u[:1] == "2":
             st.write("Under construction ... 🚧")
@@ -79,7 +83,9 @@ def main():
             st.button("Find data")
             response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
             df = pd.json_normalize(response['result'])
-            st.table(df.sort_values(by='datetime', ascending=False))
+            df = df.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+            df.index += 1
+            st.table(df)
 
         elif type_tr[:1] == "2":
             st.subheader("Transaction by id")
@@ -103,7 +109,9 @@ def main():
         st.button("Find data")
         response = requests.get(f"{url}/miners/{username}").json()
         if response['success']:
-            st.table(pd.json_normalize(response['result']))
+            df = pd.json_normalize(response['result'])
+            df.index += 1
+            st.table(df)
         else:
             st.table(pd.json_normalize(response))
 
@@ -148,6 +156,7 @@ def main():
                 "DUCO": [d.split('DUCO - ')[0] for d in m_list],
             }
             df_miners = pd.DataFrame(data_miners)
+            df_miners.index += 1
             st.table(df_miners)
 
         if type_s[:1] == "2":
@@ -169,6 +178,7 @@ def main():
     elif type_r[:1] == "6":
         response = requests.get(f"{url}/all_pools").json()
         df = pd.json_normalize(response['result'])
+        df.index += 1
         st.subheader("All pools")
         st.table(df)
 
