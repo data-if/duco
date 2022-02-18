@@ -41,7 +41,7 @@ def main():
 
         if type_u[:1] == "1":
             st.subheader("User info")
-            username = st.text_input("Input username:", "revox")
+            username = st.text_input("Input username:", "ifdeduco")
             st.button("Find")
             response = requests.get(f"{url}/users/{username}").json()
 
@@ -78,7 +78,7 @@ def main():
         if type_tr[:1] == "1":
             st.subheader("User transactions")
             c1, c2 = st.columns(2)
-            username = c1.text_input("Input username:", "revox")
+            username = c1.text_input("Input username:", "ifdeduco")
             limit = c2.number_input("Input count of transactions:", min_value=1, value=10, step=1)
             st.button("Find data")
             response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
@@ -105,7 +105,7 @@ def main():
 
     elif type_r[:1] == "3":
         st.subheader("Miners by username")
-        username = st.text_input("Input username:", "revox")
+        username = st.text_input("Input username:", "ifdeduco")
         st.button("Find data")
         response = requests.get(f"{url}/miners/{username}").json()
         if response['success']:
@@ -117,7 +117,7 @@ def main():
 
     elif type_r[:1] == "4":
         st.subheader("Balance by username")
-        username = st.text_input("Input username:", "revox")
+        username = st.text_input("Input username:", "ifdeduco")
         st.button("Find data")
         response = requests.get(f"{url}/balances/{username}").json()
         df = pd.json_normalize(response['result'])
