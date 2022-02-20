@@ -72,21 +72,22 @@ def main():
                 username = st.text_input("Input username:", "NGX")
                 st.form_submit_button("Find")
                 response = requests.get(f"{url}/users/{username}").json()
-
-                df_bal = pd.json_normalize(response['result']['balance'])
-                df_min = pd.json_normalize(response['result']['miners'])
-                df_min.index += 1
-                df_tr = pd.json_normalize(response['result']['transactions'])
-                if response['result']['transactions']:
-                    df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
-                df_tr.index += 1
-
-                st.subheader("Balance")
-                st.table(df_bal)
-                st.subheader("User Miners")
-                st.dataframe(df_min)
-                st.subheader("User Transactions")
-                st.dataframe(df_tr)
+                if response['success']:
+                    df_bal = pd.json_normalize(response['result']['balance'])
+                    df_min = pd.json_normalize(response['result']['miners'])
+                    df_min.index += 1
+                    df_tr = pd.json_normalize(response['result']['transactions'])
+                    if response['result']['transactions']:
+                        df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+                        df_tr.index += 1
+                    st.subheader("Balance")
+                    st.table(df_bal)
+                    st.subheader("User Miners")
+                    st.dataframe(df_min)
+                    st.subheader("User Transactions")
+                    st.dataframe(df_tr)
+                else:
+                    st.code(pd.json_normalize(response)['message'][0])
 
         elif type_u[:1] == "2":
             st.write("Under Construction ... 🚧")
