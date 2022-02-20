@@ -7,7 +7,7 @@ def header():
     # st.set_page_config(initial_sidebar_state="collapsed")
     st.sidebar.image('https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png', width=300)
     st.sidebar.markdown("---")
-    st.header("ᕲUCO data")
+    st.header("ᕲUCO ᕲATA")
     st.markdown("---")
 
 
