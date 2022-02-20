@@ -77,7 +77,8 @@ def main():
                 df_min = pd.json_normalize(response['result']['miners'])
                 df_min.index += 1
                 df_tr = pd.json_normalize(response['result']['transactions'])
-                df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+                if response['result']['transactions']:
+                    df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
                 df_tr.index += 1
 
                 st.subheader("Balance")
