@@ -57,7 +57,7 @@ def main():
 
     st.sidebar.markdown("---")
 
-    username = ""
+    username = "vasavaselek"
     if type_r[:1] == "1":
         type_u = st.radio(
             "Select data type:", (
@@ -70,7 +70,7 @@ def main():
             with st.form("user_info"):
                 hide_table_indexes()
                 st.subheader("User Info")
-                username = st.text_input("Username:", "vasavaselek")
+                username = st.text_input("Username:", username)
                 st.form_submit_button("Go")
                 response = requests.get(f"{url}/users/{username}").json()
                 if response['success']:
