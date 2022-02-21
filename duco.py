@@ -69,7 +69,7 @@ def main():
             with st.form("user_info"):
                 hide_table_indexes()
                 st.subheader("User Info")
-                username = st.text_input("Input username:", "NGX")
+                username = st.text_input("Username:", "vasavaselek")
                 st.form_submit_button("Find")
                 response = requests.get(f"{url}/users/{username}").json()
                 if response['success']:
@@ -81,10 +81,10 @@ def main():
                         df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
                         df_tr.index += 1
                     st.subheader("Balance")
-                    st.table(df_bal)
-                    st.subheader("User Miners")
+                    st.table(df_bal.drop(["username"], 1))
+                    st.subheader(f"Miners ({df_min.shape[0]})")
                     st.dataframe(df_min)
-                    st.subheader("User Transactions")
+                    st.subheader("Transactions")
                     st.dataframe(df_tr)
                 else:
                     st.code(pd.json_normalize(response)['message'][0])
@@ -109,14 +109,20 @@ def main():
             with st.form("transactions"):
                 st.subheader("User Transactions")
                 c1, c2 = st.columns(2)
-                username = c1.text_input("Input username:", "NGX")
-                limit = c2.number_input("Input count of transactions:", min_value=1, value=10, step=1)
+                username = c1.text_input("Username:", "vasavaselek")
+                limit = c2.number_input("Transactions Count:", min_value=1, value=10, step=1)
                 st.form_submit_button("Find data")
                 response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
-                df = pd.json_normalize(response['result'])
-                df = df.sort_values(by='datetime', ascending=False).reset_index(drop=True)
-                df.index += 1
-                st.dataframe(df)
+                if response['success']:
+                    df = pd.json_normalize(response['result'])
+                    if not df.empty:
+                        df = df.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+                        df.index += 1
+                        st.dataframe(df, height=500)
+                    else:
+                        st.code("User did not have any transactions")
+                else:
+                    st.code(pd.json_normalize(response)['message'][0])
 
         elif type_tr[:1] == "2":
             with st.form("transaction_by_id"):
@@ -132,7 +138,7 @@ def main():
             with st.form("transaction_by_id"):
                 hide_df_indexes()
                 st.subheader("Transaction By Hash")
-                tr_h = st.text_input("Input transaction hash:", "84b2303d95bcd1dd921350803ae92157d667d627")
+                tr_h = st.text_input("Transaction Hash:", "84b2303d95bcd1dd921350803ae92157d667d627")
                 st.form_submit_button("Find data")
                 response = requests.get(f"{url}/transactions/{tr_h}").json()
                 df = pd.json_normalize(response['result'])
@@ -141,26 +147,26 @@ def main():
     elif type_r[:1] == "3":
         with st.form("user_miners"):
             st.subheader("Miners By Username")
-            username = st.text_input("Input username:", "NGX")
+            username = st.text_input("Username:", "vasavaselek")
             st.form_submit_button("Find data")
             response = requests.get(f"{url}/miners/{username}").json()
             hide_table_indexes()
             if response['success']:
                 df = pd.json_normalize(response['result'])
                 df.index += 1
-                st.dataframe(df)
+                st.dataframe(df.drop(["username"], 1), height=1000)
             else:
                 st.code(pd.json_normalize(response)['message'][0])
 
     elif type_r[:1] == "4":
         with st.form("user_balance"):
             st.subheader("Balance By Username")
-            username = st.text_input("Input username:", "NGX")
+            username = st.text_input("Username:", "vasavaselek")
             st.form_submit_button("Find Data")
             response = requests.get(f"{url}/balances/{username}").json()
             hide_table_indexes()
             df = pd.json_normalize(response['result'])
-            st.table(df)
+            st.table(df.drop(["username"], 1))
 
     elif type_r[:1] == "5":
         type_s = st.radio(
@@ -188,7 +194,7 @@ def main():
                 st.form_submit_button("Refresh")
 
             hide_table_indexes()
-            hide_df_indexes()
+            # hide_df_indexes()
 
             with st.form("miner_distribution"):
                 df_md = pd.json_normalize(response['Miner distribution'])
@@ -199,7 +205,7 @@ def main():
             with st.form("kolka_statistics"):
                 df_k = pd.json_normalize(response['Kolka'])
                 st.subheader("Kolka Statistics")
-                st.dataframe(df_k)
+                st.table(df_k)
                 st.form_submit_button("Refresh")
 
             with st.form("server_statistics"):
@@ -219,12 +225,14 @@ def main():
             # st.table(df)
 
         if type_s[:1] == "3":
-            response = requests.get(f"{url}/historic_prices").json()
-            if response['success']:
-                st.subheader("Historic Prices")
-                st.table(pd.json_normalize(response['result']))
-            else:
-                st.code(pd.json_normalize(response)['message'][0])
+            with st.form("hist_stat"):
+                response = requests.get(f"{url}/historic_prices").json()
+                if response['success']:
+                    st.subheader("Historic Prices")
+                    st.table(pd.json_normalize(response['result']))
+                else:
+                    st.code(pd.json_normalize(response)['message'][0])
+                st.form_submit_button("Refresh")
 
     elif type_r[:1] == "6":
         with st.form("all_pools"):
