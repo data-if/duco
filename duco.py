@@ -3,12 +3,17 @@ import pandas as pd
 import requests
 
 
-def header():
-    # st.set_page_config(initial_sidebar_state="collapsed")
-    st.sidebar.image('https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png', width=300)
-    st.sidebar.markdown("---")
-    st.header("ᕲUCO ᕲATA")
-    st.markdown("---")
+def header(usr):
+    st.set_page_config(
+        page_title="ᕲUCO ᕲATA",
+        page_icon="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png",
+        layout="wide",
+    )
+    st.sidebar.image("https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png", width=300)
+    # st.header("ᕲUCO ᕲATA")
+    username = st.sidebar.text_input("Username:", usr)
+    st.sidebar.button("Go")
+    return username
 
 
 def hide_table_indexes():
@@ -38,7 +43,7 @@ def hide_df_indexes():
 
 
 def main():
-    header()
+    username = header("vasavaselek")
 
     url = "https://server.duinocoin.com/"
 
@@ -55,10 +60,6 @@ def main():
         )
     )
 
-    st.sidebar.markdown("---")
-
-    username = st.sidebar.text_input("Username:", "vasavaselek")
-    st.sidebar.button("Go")
     if type_r[:1] == "1":
         type_u = st.radio(
             "Select data type:", (
@@ -82,7 +83,7 @@ def main():
                     st.subheader("Balance")
                     st.table(df_bal.drop(["username"], 1))
                     st.subheader(f"Miners ({df_min.shape[0]})")
-                    st.dataframe(df_min)
+                    st.dataframe(df_min.drop(["username"], 1) if df_min.shape[0] > 0 else df_min)
                     st.subheader("Transactions")
                     st.dataframe(df_tr)
                 else:
@@ -102,7 +103,6 @@ def main():
                 "2. Transaction By id/hash",
             )
         )
-        st.markdown("---")
 
         if type_tr[:1] == "1":
             with st.form("transactions"):
@@ -169,7 +169,6 @@ def main():
                 "3. Historic Prices",
             )
         )
-        st.markdown("---")
 
         if type_s[:1] == "1":
             response = requests.get(f"{url}/statistics").json()
