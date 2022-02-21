@@ -58,6 +58,7 @@ def main():
     st.sidebar.markdown("---")
 
     username = "vasavaselek"
+    username = st.sidebar.text_input("Username:", username)
     if type_r[:1] == "1":
         type_u = st.radio(
             "Select data type:", (
