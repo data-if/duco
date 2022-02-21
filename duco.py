@@ -57,6 +57,7 @@ def main():
 
     st.sidebar.markdown("---")
 
+    username = ""
     if type_r[:1] == "1":
         type_u = st.radio(
             "Select data type:", (
@@ -70,7 +71,7 @@ def main():
                 hide_table_indexes()
                 st.subheader("User Info")
                 username = st.text_input("Username:", "vasavaselek")
-                st.form_submit_button("Find")
+                st.form_submit_button("Go")
                 response = requests.get(f"{url}/users/{username}").json()
                 if response['success']:
                     df_bal = pd.json_normalize(response['result']['balance'])
@@ -109,9 +110,9 @@ def main():
             with st.form("transactions"):
                 st.subheader("User Transactions")
                 c1, c2 = st.columns(2)
-                username = c1.text_input("Username:", "vasavaselek")
+                username = c1.text_input("Username:", username)
                 limit = c2.number_input("Transactions Count:", min_value=1, value=10, step=1)
-                st.form_submit_button("Find data")
+                st.form_submit_button("Go")
                 response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
                 if response['success']:
                     df = pd.json_normalize(response['result'])
@@ -129,7 +130,7 @@ def main():
                 hide_df_indexes()
                 st.subheader("Transaction By id")
                 tr_id = st.number_input("Input transaction id:", min_value=1, value=1, step=1)
-                st.form_submit_button("Find data")
+                st.form_submit_button("Go")
                 response = requests.get(f"{url}/id_transactions/{tr_id}").json()
                 df = pd.json_normalize(response['result'])
                 st.dataframe(df)
@@ -139,7 +140,7 @@ def main():
                 hide_df_indexes()
                 st.subheader("Transaction By Hash")
                 tr_h = st.text_input("Transaction Hash:", "84b2303d95bcd1dd921350803ae92157d667d627")
-                st.form_submit_button("Find data")
+                st.form_submit_button("Go")
                 response = requests.get(f"{url}/transactions/{tr_h}").json()
                 df = pd.json_normalize(response['result'])
                 st.dataframe(df)
@@ -147,8 +148,8 @@ def main():
     elif type_r[:1] == "3":
         with st.form("user_miners"):
             st.subheader("Miners By Username")
-            username = st.text_input("Username:", "vasavaselek")
-            st.form_submit_button("Find data")
+            username = st.text_input("Username:", username)
+            st.form_submit_button("Go")
             response = requests.get(f"{url}/miners/{username}").json()
             hide_table_indexes()
             if response['success']:
@@ -161,8 +162,8 @@ def main():
     elif type_r[:1] == "4":
         with st.form("user_balance"):
             st.subheader("Balance By Username")
-            username = st.text_input("Username:", "vasavaselek")
-            st.form_submit_button("Find Data")
+            username = st.text_input("Username:", username)
+            st.form_submit_button("Go")
             response = requests.get(f"{url}/balances/{username}").json()
             hide_table_indexes()
             df = pd.json_normalize(response['result'])
