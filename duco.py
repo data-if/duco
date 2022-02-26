@@ -43,7 +43,7 @@ def hide_df_indexes():
 
 
 def main():
-    username = header("vasavaselek")
+    username = header("ifdeduco")
 
     url = "https://server.duinocoin.com/"
 
