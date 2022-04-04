@@ -107,7 +107,7 @@ def main():
         if type_tr[:1] == "1":
             with st.form("transactions"):
                 st.subheader(f"{username} Transactions")
-                col1, _, _, _ = st.columns(4)
+                col1, _, _ = st.columns(3)
                 with col1:
                     limit = st.number_input("Transactions Count:", min_value=1, value=10, step=1)
                 response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
