@@ -1,2 +1,2 @@
 # Streamlit
-streamlit==1.5.1  # https://streamlit.io/
+streamlit==1.8.1  # https://streamlit.io/

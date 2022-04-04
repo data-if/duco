@@ -56,14 +56,14 @@ def main():
             "5. Statistics",
             "6. All Pools",
             "7. Get Pool",
-            "8. Donate",
+            # "8. Donate",
         )
     )
 
     if type_r[:1] == "1":
         type_u = st.radio(
             "Select data type:", (
-                "1. Info by username",
+                f"1. {username} info",
                 "2. All users",
             )
         )
@@ -99,15 +99,17 @@ def main():
     elif type_r[:1] == "2":
         type_tr = st.radio(
             "Select data type:", (
-                "1. User Transactions",
+                "1. All Transactions",
                 "2. Transaction By id/hash",
             )
         )
 
         if type_tr[:1] == "1":
             with st.form("transactions"):
-                st.subheader("User Transactions")
-                limit = st.number_input("Transactions Count:", min_value=1, value=10, step=1)
+                st.subheader(f"{username} Transactions")
+                col1, _, _, _ = st.columns(4)
+                with col1:
+                    limit = st.number_input("Transactions Count:", min_value=1, value=10, step=1)
                 response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
                 if response['success']:
                     df = pd.json_normalize(response['result'])
@@ -141,12 +143,13 @@ def main():
 
     elif type_r[:1] == "3":
         with st.form("user_miners"):
-            st.subheader("Usern Miners")
             response = requests.get(f"{url}/miners/{username}").json()
-            hide_table_indexes()
             if response['success']:
                 df = pd.json_normalize(response['result'])
+                st.subheader(f"{username} Miners ({df.shape[0]})")
+
                 df.index += 1
+                hide_table_indexes()
                 st.dataframe(df.drop(["username"], 1), height=1000)
             else:
                 st.code(pd.json_normalize(response)['message'][0])
@@ -154,7 +157,7 @@ def main():
 
     elif type_r[:1] == "4":
         with st.form("user_balance"):
-            st.subheader("Usern Balance")
+            st.subheader(f"{username} Balance")
             response = requests.get(f"{url}/balances/{username}").json()
             hide_table_indexes()
             df = pd.json_normalize(response['result'])
@@ -247,20 +250,20 @@ def main():
             st.table(df)
             st.form_submit_button("Refresh")
 
-    elif type_r[:1] == "8":
-        st.subheader("Donate")
-        js = """
-        <iframe 
-            id='kofiframe' 
-            src='https://ko-fi.com/kosarevsky/?hidefeed=true&widget=true&embed=true&preview=true' 
-            style='border:none;width:100%;padding:4px;background:#a9a9a9;' 
-            height='712' 
-            title='kosarevsky'
-        >
-        </iframe>
-        """
-
-        st.markdown(js, unsafe_allow_html=True)
+    # elif type_r[:1] == "8":
+    #     st.subheader("Donate")
+    #     js = """
+    #     <iframe
+    #         id='kofiframe'
+    #         src='https://ko-fi.com/kosarevsky/?hidefeed=true&widget=true&embed=true&preview=true'
+    #         style='border:none;width:100%;padding:4px;background:#a9a9a9;'
+    #         height='712'
+    #         title='kosarevsky'
+    #     >
+    #     </iframe>
+    #     """
+    #
+    #     st.markdown(js, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
