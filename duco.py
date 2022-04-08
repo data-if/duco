@@ -78,7 +78,7 @@ def main():
                     df_min.index += 1
                     df_tr = pd.json_normalize(response['result']['transactions'])
                     if response['result']['transactions']:
-                        df_tr = df_tr.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+                        df_tr = df_tr.sort_values(by='id', ascending=False).reset_index(drop=True)
                         df_tr.index += 1
                     st.subheader("Balance")
                     st.table(df_bal.drop(["username"], 1))
@@ -114,7 +114,7 @@ def main():
                 if response['success']:
                     df = pd.json_normalize(response['result'])
                     if not df.empty:
-                        df = df.sort_values(by='datetime', ascending=False).reset_index(drop=True)
+                        df = df.sort_values(by='id', ascending=False).reset_index(drop=True)
                         df.index += 1
                         st.dataframe(df, height=500)
                     else:
