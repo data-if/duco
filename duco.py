@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
+import pendulum
 
 
 def header(usr):
@@ -73,17 +74,25 @@ def main():
                 hide_table_indexes()
                 response = requests.get(f"{url}/users/{username}").json()
                 if response['success']:
-                    df_bal = pd.json_normalize(response['result']['balance'])
-                    df_min = pd.json_normalize(response['result']['miners'])
-                    df_min.index += 1
-                    df_tr = pd.json_normalize(response['result']['transactions'])
+                    if response['result']['miners']:
+                        df_min = pd.json_normalize(response['result']['miners'])
+                        df_min = df_min.sort_values(by='identifier', ascending=True).reset_index(drop=True)
+                        df_min.index += 1
                     if response['result']['transactions']:
+                        df_tr = pd.json_normalize(response['result']['transactions'])
                         df_tr = df_tr.sort_values(by='id', ascending=False).reset_index(drop=True)
                         df_tr.index += 1
-                    st.subheader("Balance")
-                    st.table(df_bal.drop(["username"], 1))
+                    st.subheader("User Data")
+                    for key, value in response['result']['balance'].items():
+                        if key in ("stake_date", "verified_date", "last_login"):
+                            value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
+                        if key == "created":
+                            value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format('HH:mm:ss dddd DD MMMM YYYY')
+                        st.code(f"{key.title().replace('_', ' ')}: {value}")
+
                     st.subheader(f"Miners ({df_min.shape[0]})")
                     st.dataframe(df_min.drop(["username"], 1) if df_min.shape[0] > 0 else df_min)
+
                     st.subheader("Transactions")
                     st.dataframe(df_tr)
                 else:
@@ -148,6 +157,7 @@ def main():
                 df = pd.json_normalize(response['result'])
                 st.subheader(f"{username} Miners ({df.shape[0]})")
 
+                df = df.sort_values(by='identifier', ascending=True).reset_index(drop=True)
                 df.index += 1
                 hide_table_indexes()
                 st.dataframe(df.drop(["username"], 1), height=1000)
@@ -159,9 +169,13 @@ def main():
         with st.form("user_balance"):
             st.subheader(f"{username} Balance")
             response = requests.get(f"{url}/balances/{username}").json()
-            hide_table_indexes()
-            df = pd.json_normalize(response['result'])
-            st.table(df.drop(["username"], 1))
+
+            for key, value in response['result'].items():
+                if key in ("balance", "stake_date", "stake_amount"):
+                    if key in "stake_date":
+                        value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
+                    st.code(f"{key.title().replace('_', ' ')}: {value}")
+
             st.form_submit_button("Refresh")
 
     elif type_r[:1] == "5":

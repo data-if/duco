@@ -1,2 +1,7 @@
 # Streamlit
 streamlit==1.8.1  # https://streamlit.io/
+
+# Pendulum
+pendulum==2.1.2  # https://pendulum.eustace.io/docs/
+
+pip==22.0.4
