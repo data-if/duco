@@ -84,11 +84,14 @@ def main():
                         df_tr.index += 1
                     st.subheader("User Data")
                     for key, value in response['result']['balance'].items():
-                        if key in ("stake_date", "verified_date", "last_login"):
-                            value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
-                        if key == "created":
-                            value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format('HH:mm:ss dddd DD MMMM YYYY')
-                        st.code(f"{key.title().replace('_', ' ')}: {value}")
+                        if key not in "username":
+                            if key in ("stake_date", "verified_date", "last_login"):
+                                value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
+                            if key in ("balance", "stake_amount"):
+                                value += " ᕲ"
+                            if key == "created":
+                                value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format('HH:mm:ss dddd DD MMMM YYYY')
+                            st.code(f"{key.title().replace('_', ' ')}: {value}")
 
                     st.subheader(f"Miners ({df_min.shape[0]})")
                     st.dataframe(df_min.drop(["username"], 1) if df_min.shape[0] > 0 else df_min)
@@ -174,6 +177,8 @@ def main():
                 if key in ("balance", "stake_date", "stake_amount"):
                     if key in "stake_date":
                         value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
+                    if key in ("balance", "stake_amount"):
+                        value += " ᕲ"
                     st.code(f"{key.title().replace('_', ' ')}: {value}")
 
             st.form_submit_button("Refresh")
