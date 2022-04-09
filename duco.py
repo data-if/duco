@@ -1,3 +1,6 @@
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+import plotly.express as px
 import streamlit as st
 import pandas as pd
 import requests
@@ -217,10 +220,10 @@ def main():
                 st.form_submit_button("Refresh")
 
             with st.form("kolka_statistics"):
-                df_k = pd.json_normalize(response['Kolka'])
+                df_k = pd.json_normalize(response["Kolka"])
                 st.subheader("Kolka Statistics")
-                st.table(df_k)
-                # st.plotly_chart(df_k)
+                fig = px.bar(df_k, y=["Banned", "Jailed"], barmode="group")
+                st.plotly_chart(fig, use_container_width=True)
                 st.form_submit_button("Refresh")
 
             with st.form("server_statistics"):
