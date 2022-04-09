@@ -5,7 +5,7 @@ import pendulum
 
 
 DT_FMT = "dddd DD MMMM YYYY"
-BST = ("balance", "stake_amount")
+BST = ("balance", "stake_amount", "All-time mined DUCO")
 
 
 def header(usr):
@@ -220,14 +220,15 @@ def main():
                 df_k = pd.json_normalize(response['Kolka'])
                 st.subheader("Kolka Statistics")
                 st.table(df_k)
+                # st.plotly_chart(df_k)
                 st.form_submit_button("Refresh")
 
             with st.form("server_statistics"):
                 filter_ = ['Kolka', 'Miner distribution', 'Top 10 richest miners']
                 filtered = {k: _ for k, _ in response.items() if k not in filter_}
-                df = pd.json_normalize(filtered)
                 st.subheader("Server Statistics")
-                st.dataframe(df)
+                for key, value in filtered.items():
+                    st.code(f"{key}: {value} {'ᕲ' if key in BST else ''}")
                 st.form_submit_button("Refresh")
 
         if type_s[:1] == "2":
@@ -264,9 +265,11 @@ def main():
         with st.form("get_pool"):
             st.subheader("Get Pool")
             response = requests.get(f"{url}/getPool").json()
-            df = pd.json_normalize(response)
-            hide_table_indexes()
-            st.table(df)
+            if response['success']:
+                for key, value in response.items():
+                    if key not in "success":
+                        st.code(f"{key.title().replace('_', ' ')}: {value}")
+
             st.form_submit_button("Refresh")
 
     # elif type_r[:1] == "8":
