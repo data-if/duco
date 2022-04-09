@@ -4,6 +4,10 @@ import requests
 import pendulum
 
 
+DT_FMT = "dddd DD MMMM YYYY"
+BST = ("balance", "stake_amount")
+
+
 def header(usr):
     st.set_page_config(
         page_title="ᕲUCO ᕲATA",
@@ -86,12 +90,10 @@ def main():
                     for key, value in response['result']['balance'].items():
                         if key not in "username":
                             if key in ("stake_date", "verified_date", "last_login"):
-                                value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
-                            if key in ("balance", "stake_amount"):
-                                value += " ᕲ"
+                                value = pendulum.from_timestamp(value).format(DT_FMT)
                             if key == "created":
-                                value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format('HH:mm:ss dddd DD MMMM YYYY')
-                            st.code(f"{key.title().replace('_', ' ')}: {value}")
+                                value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format(f'HH:mm:ss {DT_FMT}')
+                            st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
 
                     st.subheader(f"Miners ({df_min.shape[0]})")
                     st.dataframe(df_min.drop(["username"], 1) if df_min.shape[0] > 0 else df_min)
@@ -176,10 +178,8 @@ def main():
             for key, value in response['result'].items():
                 if key in ("balance", "stake_date", "stake_amount"):
                     if key in "stake_date":
-                        value = pendulum.from_timestamp(value).format('dddd DD MMMM YYYY')
-                    if key in ("balance", "stake_amount"):
-                        value += " ᕲ"
-                    st.code(f"{key.title().replace('_', ' ')}: {value}")
+                        value = pendulum.from_timestamp(value).format(DT_FMT)
+                    st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
 
             st.form_submit_button("Refresh")
 
