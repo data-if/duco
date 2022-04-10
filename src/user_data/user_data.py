@@ -3,7 +3,15 @@ import pandas as pd
 import requests
 import pendulum
 
-from src.utils.helpers import hide_table_indexes, DT_FMT, BST, get_temp_hum
+from src.utils.helpers import (
+    BST,
+    DT_FMT,
+    duco_to_usd,
+    get_temp_hum,
+    get_duco_price,
+    calc_stake_reward,
+    hide_table_indexes,
+)
 
 
 def main(username, url):
@@ -17,16 +25,22 @@ def main(username, url):
     if type_u[:1] == "1":
         with st.form("user_info"):
             hide_table_indexes()
-            response = requests.get(f"{url}/users/{username}").json()
+            response = requests.get(f"{url}/v3/users/{username}").json()
             if response["success"]:
                 st.subheader("User Data")
+                duco_price = get_duco_price(url, username)
                 for key, value in response["result"]["balance"].items():
                     if key not in "username":
                         if key in ("stake_date", "verified_date", "last_login"):
                             value = pendulum.from_timestamp(value).format(DT_FMT)
                         if key == "created" and "before" not in value:
                             value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format(f"HH:mm:ss {DT_FMT}")
-                        st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
+                        st.code(f"{key.title().replace('_', ' ')}: {value}{'ᕲ / ' + duco_to_usd(duco_price, value) if key in BST else ''}")
+
+                stake = response["result"]["balance"]["stake_amount"]
+                if stake:
+                    reward = calc_stake_reward(stake)
+                    st.code(f"Staking Reward: {reward}ᕲ / {duco_to_usd(duco_price, reward)}")
 
                 if response["result"]["miners"]:
                     miners = response["result"]["miners"]

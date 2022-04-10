@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 
-from src.utils.helpers import hide_df_indexes
+from src.utils.helpers import hide_df_indexes, get_transactions_limit
 
 
 def main(username, url):
@@ -16,9 +16,7 @@ def main(username, url):
     if type_tr[:1] == "1":
         with st.form("transactions"):
             st.subheader(f"{username} Transactions")
-            col1, _, _ = st.columns(3)
-            with col1:
-                limit = st.number_input("Transactions Count:", min_value=1, value=10, step=1)
+            limit = get_transactions_limit()
             response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
             if response["success"]:
                 df = pd.json_normalize(response["result"])

@@ -1,8 +1,22 @@
 import streamlit as st
+import requests
 
 
 DT_FMT = "dddd DD MMMM YYYY"
 BST = ("balance", "stake_amount", "All-time mined DUCO")
+STAKING_PERC = 1.5
+
+
+def get_duco_price(url, username):
+    return requests.get(f"{url}/v3/users/{username}").json()["result"]["prices"]["max"]
+
+
+def duco_to_usd(duco_price, val):
+    return f"≈{round(duco_price * val, 4)}$"
+
+
+def calc_stake_reward(stake):
+    return round(stake * (1 + (STAKING_PERC/100)) - stake)
 
 
 def hide_table_indexes():
@@ -43,3 +57,9 @@ def get_temp_hum(miners):
                 st.code(f"Humidity: {hum}%")
                 st.markdown("---")
 
+
+def get_transactions_limit():
+    col1, _, _ = st.columns(3)
+    with col1:
+        limit = st.number_input("Transactions Count:", min_value=1, value=10, step=1)
+    return limit

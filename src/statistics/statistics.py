@@ -66,7 +66,7 @@ def main(url):
 
     if type_s[:1] == "3":
         with st.form("hist_stat"):
-            response = requests.get(f"{url}/historic_prices").json()
+            response = requests.get(f"{url}/historic_prices?currency=max&limit=30").json()
             if response["success"]:
                 st.subheader("Historic Prices")
                 st.table(pd.json_normalize(response["result"]))
