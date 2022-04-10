@@ -32,6 +32,7 @@ def hide_df_indexes():
 
 
 def get_temp_hum(miners):
+    st.subheader("Sensors Data") if any(m["it"] for m in miners) else ""
     for miner in miners:
         if miner["it"]:
             temp = miner["it"].split("@")[0]
