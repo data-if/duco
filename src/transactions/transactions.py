@@ -29,7 +29,7 @@ def main(username, url):
                 else:
                     st.code("User did not have any transactions")
             else:
-                st.code(pd.json_normalize(response)["message"][0])
+                st.code(response["message"])
             st.form_submit_button("Refresh")
 
     elif type_tr[:1] == "2":

@@ -10,12 +10,14 @@ def main(username, url):
         st.subheader(f"{username} Balance")
         response = requests.get(f"{url}/balances/{username}").json()
 
-        for key, value in response["result"].items():
-            if key in ("balance", "stake_date", "stake_amount"):
-                if key in "stake_date":
-                    value = pendulum.from_timestamp(value).format(DT_FMT)
-                st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
-
+        if response["success"]:
+            for key, value in response["result"].items():
+                if key in ("balance", "stake_date", "stake_amount"):
+                    if key in "stake_date":
+                        value = pendulum.from_timestamp(value).format(DT_FMT)
+                    st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
+        else:
+            st.code(response["message"])
         st.form_submit_button("Refresh")
 
 

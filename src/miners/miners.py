@@ -17,7 +17,7 @@ def main(username, url):
             hide_table_indexes()
             st.dataframe(df.drop(["username"], 1), height=1000)
         else:
-            st.code(pd.json_normalize(response)["message"][0])
+            st.code(response["message"])
         st.form_submit_button("Refresh")
 
 

@@ -12,7 +12,7 @@ def main(url):
             st.subheader("All Pools")
             st.dataframe(df, height=1000)
         else:
-            st.code(pd.json_normalize(response)["message"][0])
+            st.code(response["message"])
         st.form_submit_button("Refresh")
 
 

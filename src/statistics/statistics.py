@@ -59,7 +59,7 @@ def main(url):
     if type_s[:1] == "2":
         st.write("Under Construction ... 🚧")
         # response = requests.get(f"{url}/statistics_miners").json()
-        # df = pd.json_normalize(response.json()['result'])
+        # df = pd.json_normalize(response.json()["result"])
         # st.subheader("Miners Statistics")
         # st.write(response)
         # st.table(df)
@@ -71,7 +71,7 @@ def main(url):
                 st.subheader("Historic Prices")
                 st.table(pd.json_normalize(response["result"]))
             else:
-                st.code(pd.json_normalize(response)["message"][0])
+                st.code(response["message"])
             st.form_submit_button("Refresh")
 
 
