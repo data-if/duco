@@ -11,16 +11,16 @@ def main(username, url):
         response = requests.get(f"{url}/balances/{username}").json()
 
         if response["success"]:
+            duco_price = get_duco_price(url, username)
             for key, value in response["result"].items():
                 if key in ("balance", "stake_date", "stake_amount"):
                     if key in "stake_date":
                         value = pendulum.from_timestamp(value).format(DT_FMT)
-                    st.code(f"{key.title().replace('_', ' ')}: {value}{'ᕲ' if key in BST else ''}")
+                    st.code(f"{key.title().replace('_', ' ')}: {value}{'ᕲ / ' + duco_to_usd(duco_price, value) if key in BST else ''}")
 
             stake = response["result"]["stake_amount"]
             if stake:
                 reward = calc_stake_reward(stake)
-                duco_price = get_duco_price(url, username)
                 st.code(f"Staking Reward: {reward}ᕲ / {duco_to_usd(duco_price, reward)}")
 
         else:
