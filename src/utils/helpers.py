@@ -29,3 +29,15 @@ def hide_df_indexes():
 
     # Inject CSS with Markdown
     st.markdown(hide_dataframe_row_index, unsafe_allow_html=True)
+
+
+def get_temp_hum(miners):
+    for miner in miners:
+        if miner["it"]:
+            temp = miner["it"].split("@")[0]
+            hum = miner["it"].split("@")[1]
+            if temp not in "error":
+                st.markdown("---")
+                st.code(f"Identifier: {miner['identifier']}")
+                st.code(f"Temperature: {temp}°C / {(float(temp) * 9 / 5) + 32}°F")
+                st.code(f"Humidity: {hum}%")

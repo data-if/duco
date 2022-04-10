@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 import pendulum
 
-from src.utils.helpers import hide_table_indexes, DT_FMT, BST
+from src.utils.helpers import hide_table_indexes, DT_FMT, BST, get_temp_hum
 
 
 def main(username, url):
@@ -29,12 +29,15 @@ def main(username, url):
                         st.code(f"{key.title().replace('_', ' ')}: {value} {'ᕲ' if key in BST else ''}")
 
                 if response["result"]["miners"]:
-                    df_min = pd.json_normalize(response["result"]["miners"])
+                    miners = response["result"]["miners"]
+                    df_min = pd.json_normalize(miners)
                     df_min = df_min.sort_values(by="identifier", ascending=True).reset_index(drop=True)
                     df_min.index += 1
 
                     st.subheader(f"Miners ({df_min.shape[0]})")
                     st.dataframe(df_min.drop(["username"], 1) if df_min.shape[0] > 0 else df_min)
+
+                    get_temp_hum(miners)
 
                 if response["result"]["transactions"]:
                     df_tr = pd.json_normalize(response["result"]["transactions"])

@@ -23,7 +23,7 @@ def header(usr):
 
 
 def main():
-    username = header("ifdeduco")
+    username = header("revox")
 
     url = "https://server.duinocoin.com/"
 
