@@ -38,7 +38,8 @@ def get_temp_hum(miners):
             temp = miner["it"].split("@")[0]
             hum = miner["it"].split("@")[1]
             if temp not in "error":
-                st.markdown("---")
                 st.code(f"Identifier: {miner['identifier']}")
                 st.code(f"Temperature: {temp}°C / {(float(temp) * 9 / 5) + 32}°F")
                 st.code(f"Humidity: {hum}%")
+                st.markdown("---")
+
