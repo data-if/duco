@@ -30,12 +30,13 @@ def main(username, url):
                 st.subheader("User Data")
                 duco_price = get_duco_price(url, username)
                 for key, value in response["result"]["balance"].items():
-                    if key not in "username":
-                        if key in ("stake_date", "verified_date", "last_login"):
-                            value = pendulum.from_timestamp(value).format(DT_FMT)
-                        if key == "created" and "before" not in value:
-                            value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format(f"HH:mm:ss {DT_FMT}")
-                        st.code(f"{key.title().replace('_', ' ')}: {value}{'ᕲ / ' + duco_to_usd(duco_price, value) if key in BST else ''}")
+                    if value:
+                        if key not in "username":
+                            if key in ("stake_date", "verified_date", "last_login"):
+                                value = pendulum.from_timestamp(value).format(DT_FMT)
+                            if key == "created" and "before" not in value:
+                                value = pendulum.from_format(value, "DD/MM/YYYY HH:mm:ss").format(f"HH:mm:ss {DT_FMT}")
+                            st.code(f"{key.title().replace('_', ' ')}: {value}{'ᕲ / ' + duco_to_usd(duco_price, value) if key in BST else ''}")
 
                 stake = response["result"]["balance"]["stake_amount"]
                 if stake:
