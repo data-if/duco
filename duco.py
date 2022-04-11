@@ -31,7 +31,7 @@ def main():
         "Select Data Type:", (
             "1. User Data",
             "2. Transactions",
-            "3. Miners",
+            "3. Miners & Sensors",
             "4. Balance",
             "5. Statistics",
             "6. All Pools",
@@ -39,6 +39,8 @@ def main():
             # "8. Donate",
         )
     )
+
+    st.sidebar.markdown("[project repo](https://github.com/data-if/duco)")
 
     if type_r[:1] == "1":
         user_data.main(username, url)
