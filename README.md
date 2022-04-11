@@ -10,3 +10,8 @@ and then this:
 ```bash
 bash run.sh
 ```
+
+or this:
+```bash
+streamlit run duco.py
+```
