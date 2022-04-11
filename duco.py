@@ -41,7 +41,7 @@ def main():
         )
     )
 
-    st.sidebar.code(f"Duco Price: ≈{get_duco_price(url, username)}$")
+    st.sidebar.code(f"ᕲuco Price: ≈{get_duco_price(url, username):.6f}$")
 
     st.sidebar.markdown("[project repo](https://github.com/data-if/duco)")
 
