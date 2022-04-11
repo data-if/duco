@@ -53,7 +53,10 @@ def main(url):
             filtered = {k: _ for k, _ in response.items() if k not in filter_}
             st.subheader("Server Statistics")
             for key, value in filtered.items():
-                st.code(f"{key}: {value} {'ᕲ' if key in BST else ''}")
+                if value:
+                    if "price" in key:
+                        value = f"{value:.6f}"
+                    st.code(f"{key}: {value}{'ᕲ' if key in BST else ''}")
             st.form_submit_button("Refresh")
 
     if type_s[:1] == "2":
