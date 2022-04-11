@@ -7,6 +7,7 @@ from src.balance import balance
 from src.statistics import statistics
 from src.all_pools import all_pools
 from src.pool import pool
+from src.utils.helpers import get_duco_price
 
 
 def header(usr):
@@ -39,6 +40,8 @@ def main():
             # "8. Donate",
         )
     )
+
+    st.sidebar.code(f"Duco Price: ≈{get_duco_price(url, username)}$")
 
     st.sidebar.markdown("[project repo](https://github.com/data-if/duco)")
 
