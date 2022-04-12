@@ -12,7 +12,7 @@ def get_duco_price(url, username):
 
 
 def duco_to_usd(duco_price, val):
-    return f"≈{round(duco_price * val, 4)}$"
+    return f"≈{(duco_price * val):.6f}$"
 
 
 def calc_stake_reward(stake):
