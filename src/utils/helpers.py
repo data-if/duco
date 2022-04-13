@@ -8,7 +8,9 @@ STAKING_PERC = 1.5
 
 
 def get_duco_price(url, username):
-    return requests.get(f"{url}/v3/users/{username}").json()["result"]["prices"]["max"]
+    response = requests.get(f"{url}/v3/users/{username}").json()
+    if response["success"]:
+        return response["result"]["prices"]["max"]
 
 
 def duco_to_usd(duco_price, val):
