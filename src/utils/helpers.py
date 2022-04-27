@@ -7,6 +7,10 @@ BST = ("balance", "stake_amount", "All-time mined DUCO")
 STAKING_PERC = 1.5
 
 
+def calc_daily(new_balance, old_balance):
+    return
+
+
 def get_duco_price(url, username):
     response = requests.get(f"{url}/v3/users/{username}").json()
     if response["success"]:
