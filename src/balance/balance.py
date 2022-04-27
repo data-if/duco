@@ -1,14 +1,13 @@
 import streamlit as st
 import pendulum
-import requests
 
-from src.utils.helpers import DT_FMT, BST, calc_stake_reward, duco_to_usd, get_duco_price
+from src.utils.helpers import DT_FMT, BST, calc_stake_reward, duco_to_usd, get_duco_price, get_user_balance, calc_daily
 
 
 def main(username, url):
     with st.form("user_balance"):
         st.subheader(f"{username} Balance")
-        response = requests.get(f"{url}/balances/{username}").json()
+        response = get_user_balance(username, url)
 
         if response["success"]:
             duco_price = get_duco_price(url, username)

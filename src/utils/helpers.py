@@ -1,6 +1,6 @@
 import streamlit as st
 import requests
-
+from requests import JSONDecodeError
 
 DT_FMT = "dddd DD MMMM YYYY"
 BST = ("balance", "stake_amount", "All-time mined DUCO")
@@ -11,6 +11,16 @@ def get_duco_price(url, username):
     response = requests.get(f"{url}/v3/users/{username}").json()
     if response["success"]:
         return response["result"]["prices"]["max"]
+
+
+def get_user_balance(username, url):
+    response = requests.get(f"{url}/balances/{username}")
+    try:
+        response = response.json()
+    except JSONDecodeError:
+        response = get_user_balance(username, url)
+
+    return response
 
 
 def duco_to_usd(duco_price, val):
