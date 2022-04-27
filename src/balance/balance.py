@@ -28,6 +28,32 @@ def main(username, url):
             st.code(response["message"])
         st.form_submit_button("Refresh")
 
+    with st.form("stake_stats"):
+        st.subheader(f"{username} Stakes Statistics")
+        import requests
+        limit = -1
+        response = requests.get(f"{url}/user_transactions/{username}?limit={limit}").json()
+        if response["success"]:
+
+            deposit = 0
+            last_deposit = 0
+            reward = 0
+
+            for tr in response["result"]:
+                if tr["memo"]:
+                    if tr["memo"] == "Staking deposit":
+                        deposit += tr["amount"]
+                        last_deposit = tr["amount"]
+                    elif tr["memo"] == "Staking rewards":
+                        reward += tr["amount"]
+
+            all_time_reward = reward - deposit
+
+            if all_time_reward < 0:
+                all_time_reward += last_deposit
+            st.code(f"All Time Staking Rewards: {all_time_reward}ᕲ / {duco_to_usd(duco_price, all_time_reward)}")
+        st.form_submit_button("Refresh")
+
 
 if __name__ == "__main__":
     main()
