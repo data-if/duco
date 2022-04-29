@@ -41,10 +41,13 @@ def main(username, url):
             for tr in response["result"]:
                 if tr["memo"]:
                     if tr["memo"] == "Staking deposit":
+                        st.write("---")
                         deposit += tr["amount"]
+                        st.write(f"Staking deposit: {deposit} on {tr['datetime']}")
                         last_deposit = tr["amount"]
                     elif tr["memo"] == "Staking rewards":
                         reward += tr["amount"]
+                        st.write(f"Staking rewards: {reward} on {tr['datetime']}")
 
             all_time_reward = reward - deposit
 
