@@ -28,7 +28,7 @@ def get_user_balance(username, url):
 
 
 def duco_to_usd(duco_price, val):
-    return f"≈{(duco_price * val):.6f}$"
+    return f"≈{round(duco_price * val, 2)}$"
 
 
 def calc_stake_reward(stake):

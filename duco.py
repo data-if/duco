@@ -37,7 +37,6 @@ def main():
             "5. Statistics",
             "6. All Pools",
             "7. Get Pool",
-            # "8. Donate",
         )
     )
 
@@ -67,21 +66,6 @@ def main():
 
     elif type_r[:1] == "7":
         pool.main(url)
-
-    # elif type_r[:1] == "8":
-    #     st.subheader("Donate")
-    #     js = """
-    #     <iframe
-    #         id='kofiframe'
-    #         src='https://ko-fi.com/kosarevsky/?hidefeed=true&widget=true&embed=true&preview=true'
-    #         style='border:none;width:100%;padding:4px;background:#a9a9a9;'
-    #         height='712'
-    #         title='kosarevsky'
-    #     >
-    #     </iframe>
-    #     """
-    #
-    #     st.markdown(js, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
