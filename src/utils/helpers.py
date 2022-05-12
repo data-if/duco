@@ -32,9 +32,9 @@ def calc_by_period(username, url, period, periods, duco_price):
                 yearly = daily * 365
 
                 c1, c2 = st.columns(2)
-                c1.write(f"Minutely: ≈{round(minutely, 2)}ᕲ {duco_to_usd(duco_price, minutely)}")
-                c1.write(f"Hourly: ≈{round(hourly, 2)}ᕲ {duco_to_usd(duco_price, hourly)}")
-                c1.write(f"Daily: ≈{round(daily, 2)}ᕲ {duco_to_usd(duco_price, daily)}")
+                c1.write(f"Minutely: ≈{round(minutely, 2)}ᕲ")
+                c1.write(f"Hourly: ≈{round(hourly, 2)}ᕲ {duco_to_usd(duco_price, hourly, 4)}")
+                c1.write(f"Daily: ≈{round(daily, 2)}ᕲ {duco_to_usd(duco_price, daily, 4)}")
                 c2.write(f"Weekly: ≈{round(weekly, 2)}ᕲ {duco_to_usd(duco_price, weekly)}")
                 c2.write(f"Monthly: ≈{round(monthly, 2)}ᕲ {duco_to_usd(duco_price, monthly)}")
                 c2.write(f"Yearly: ≈{round(yearly, 2)}ᕲ {duco_to_usd(duco_price, yearly)}")
@@ -61,8 +61,8 @@ def get_user_balance(username, url):
     return response
 
 
-def duco_to_usd(duco_price, val):
-    return f"≈{round(duco_price * val, 2)}$"
+def duco_to_usd(duco_price, val, nums=2):
+    return f"≈{round(duco_price * val, nums)}$"
 
 
 def calc_stake_reward(stake):
