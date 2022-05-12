@@ -11,6 +11,7 @@ from src.utils.helpers import (
     get_duco_price,
     calc_stake_reward,
     hide_table_indexes,
+    calc_by_period,
 )
 
 
@@ -41,7 +42,7 @@ def main(username, url):
                 stake = response["result"]["balance"]["stake_amount"]
                 if stake:
                     reward = calc_stake_reward(stake)
-                    st.code(f"Staking Reward: {reward}ᕲ / {duco_to_usd(duco_price, reward)}")
+                    st.code(f"Staking Reward: {round(reward)}ᕲ / {duco_to_usd(duco_price, reward)}")
 
                 if response["result"]["miners"]:
                     miners = response["result"]["miners"]
@@ -65,6 +66,18 @@ def main(username, url):
             else:
                 st.code(response["message"])
             st.form_submit_button("Refresh")
+
+        with st.form("daily_reward"):
+            st.subheader("Calculate Mined ᕲuco`s")
+
+            _, col = st.columns(2)
+            periods = {15: 0.25, 30: 0.5, 60: 1, 180: 3, 300: 5, 600: 10}
+            period = col.selectbox("Select period (min):", options=periods.keys(), format_func=lambda x: periods[x])
+            st.write(period)
+
+            calc_by_period(username, url, period, periods, duco_price)
+
+            st.form_submit_button("Calculate")
 
     elif type_u[:1] == "2":
         st.write("Under Construction ... 🚧")

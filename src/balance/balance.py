@@ -1,7 +1,7 @@
 import streamlit as st
 import pendulum
 
-from src.utils.helpers import DT_FMT, BST, calc_stake_reward, duco_to_usd, get_duco_price, get_user_balance, calc_daily
+from src.utils.helpers import DT_FMT, BST, calc_stake_reward, duco_to_usd, get_duco_price, get_user_balance
 
 
 def main(username, url):

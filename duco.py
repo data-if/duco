@@ -26,6 +26,10 @@ def header(usr):
 def main():
     username = header("revox")
 
+    query_params = st.experimental_get_query_params()
+    if query_params.get("username") is not None:
+        username = query_params["username"][0]
+
     url = "https://server.duinocoin.com/"
 
     type_r = st.sidebar.radio(

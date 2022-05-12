@@ -1,13 +1,46 @@
 import streamlit as st
 import requests
 from requests import JSONDecodeError
+from time import sleep
 
 DT_FMT = "dddd DD MMMM YYYY"
 BST = ("balance", "stake_amount", "All-time mined DUCO")
 STAKING_PERC = 1.5
 
 
-def calc_daily(new_balance, old_balance):
+def calc_by_period(username, url, period, periods, duco_price):
+    response = get_user_balance(username, url)
+
+    with st.spinner("Calculating..."):
+        if response["success"]:
+            balance = get_user_balance(username, url)["result"]["balance"]
+            sleep(period)
+            new_balance = get_user_balance(username, url)["result"]["balance"]
+
+            minutes = periods[period]
+            earned = new_balance - balance
+
+            if not earned:
+                calc_by_period(username, url, period, periods, duco_price)
+
+            minutely = earned * (1 // minutes) if minutes < 1 else earned / minutes
+            hourly = minutely * 60
+            daily = hourly * 24
+            weekly = daily * 7
+            monthly = daily * 30
+            yearly = daily * 365
+
+            c1, c2 = st.columns(2)
+            c1.write(f"Minutely: ≈{round(minutely, 2)}ᕲ {duco_to_usd(duco_price, minutely)}")
+            c1.write(f"Hourly: ≈{round(hourly, 2)}ᕲ {duco_to_usd(duco_price, hourly)}")
+            c1.write(f"Daily: ≈{round(daily, 2)}ᕲ {duco_to_usd(duco_price, daily)}")
+            c2.write(f"Weekly: ≈{round(weekly, 2)}ᕲ {duco_to_usd(duco_price, weekly)}")
+            c2.write(f"Monthly: ≈{round(monthly, 2)}ᕲ {duco_to_usd(duco_price, monthly)}")
+            c2.write(f"Yearly: ≈{round(yearly, 2)}ᕲ {duco_to_usd(duco_price, yearly)}")
+
+        else:
+            st.code(response["message"])
+
     return
 
 
