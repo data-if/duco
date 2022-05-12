@@ -73,7 +73,6 @@ def main(username, url):
             _, col = st.columns(2)
             periods = {15: 0.25, 30: 0.5, 60: 1, 180: 3, 300: 5, 600: 10}
             period = col.selectbox("Select period (min):", options=periods.keys(), format_func=lambda x: periods[x])
-            st.write(period)
 
             calc_by_period(username, url, period, periods, duco_price)
 
