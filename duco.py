@@ -23,12 +23,16 @@ def header(usr):
     return username
 
 
-def main():
-    username = header("revox")
-
+def get_username():
     query_params = st.experimental_get_query_params()
     if query_params.get("username") is not None:
-        username = query_params["username"][0]
+        return query_params["username"][0]
+    else:
+        return "revox"
+
+
+def main():
+    username = header(get_username())
 
     url = "https://server.duinocoin.com/"
 
