@@ -43,11 +43,11 @@ def main(username, url):
                     if tr["memo"] == "Staking deposit":
                         st.write("---")
                         deposit += tr["amount"]
-                        st.write(f"Staking deposit: {deposit} on {tr['datetime']}")
+                        st.write(f"Staking deposit: {tr['amount']} on {tr['datetime']}")
                         last_deposit = tr["amount"]
                     elif tr["memo"] == "Staking rewards":
                         reward += tr["amount"]
-                        st.write(f"Staking rewards: {reward} on {tr['datetime']}")
+                        st.write(f"Staking rewards: {tr['amount']} on {tr['datetime']}")
 
             all_time_reward = reward - deposit
 

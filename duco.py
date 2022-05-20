@@ -17,7 +17,7 @@ def header(usr):
         layout="wide",
     )
     st.sidebar.image("https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png", width=300)
-    # st.header("ᕲUCO ᕲATA")
+    st.header("ᕲUCO ᕲATA")
     username = st.sidebar.text_input("Username:", usr)
     st.sidebar.button("Go")
     return username
