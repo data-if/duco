@@ -1,10 +1,10 @@
 # Streamlit
-streamlit==1.23.1  # https://streamlit.io/
+streamlit==1.26.0  # https://streamlit.io/
 
 # Pendulum
 pendulum==2.1.2  # https://pendulum.eustace.io/docs/
 
 # Plotly
-plotly==5.15.0  # https://plotly.com/python-api-reference/
+plotly==5.16.1  # https://plotly.com/python-api-reference/
 
-pip==23.1.2
+pip==23.2.1
