@@ -8,6 +8,7 @@ from src.statistics import statistics
 from src.all_pools import all_pools
 from src.pool import pool
 from src.stake import stake
+from src.auth import auth
 from src.utils.helpers import get_duco_price
 
 
@@ -51,6 +52,7 @@ def main():
             "6. All Pools",
             "7. Get Pool",
             "8. Stake",
+            "9. Auth",
         )
     )
 
@@ -83,6 +85,9 @@ def main():
 
     elif type_r[:1] == "8":
         stake.main(username, url)
+
+    elif type_r[:1] == "9":
+        auth.main(username, url)
 
 
 if __name__ == "__main__":
