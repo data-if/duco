@@ -48,6 +48,7 @@ def calc_by_period(username, url, period, periods, duco_price):
 def get_duco_price(url, username):
     response = requests.get(f"{url}/v3/users/{username}").json()
     if response["success"]:
+        st.code(response["result"])
         return response["result"]["prices"]["max"]
 
 
