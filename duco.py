@@ -16,6 +16,10 @@ def header(usr):
         page_title="ᕲUCO ᕲATA",
         page_icon="https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png",
         layout="wide",
+        menu_items={
+            "Get Help": "https://github.com/data-if/duco#readme",
+            "Report a bug": "https://github.com/data-if/duco/issues",
+        },
     )
     st.sidebar.image("https://raw.githubusercontent.com/revoxhere/duino-coin/master/Resources/duco.png", width=300)
     st.header("ᕲUCO ᕲATA")
