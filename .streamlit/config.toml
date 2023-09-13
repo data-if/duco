@@ -4,3 +4,9 @@ backgroundColor = "#00172B"
 secondaryBackgroundColor = "#346751"
 textColor = "#ECDBBA"
 font = "monospace"
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "minimal"
