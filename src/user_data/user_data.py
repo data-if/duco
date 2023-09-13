@@ -67,16 +67,16 @@ def main(username, url):
                 st.code(response["message"])
             st.form_submit_button("Refresh")
 
-        with st.form("daily_reward"):
-            st.subheader("Calculate Mined ᕲuco`s")
-
-            _, col = st.columns(2)
-            periods = {15: 0.25, 30: 0.5, 60: 1, 180: 3, 300: 5, 600: 10}
-            period = col.selectbox("Select period (min):", options=periods.keys(), format_func=lambda x: periods[x])
-
-            calc_by_period(username, url, period, periods, duco_price)
-
-            st.form_submit_button("Calculate")
+        # with st.form("daily_reward"):
+        #     st.subheader("Calculate Mined ᕲuco`s")
+        #
+        #     _, col = st.columns(2)
+        #     periods = {15: 0.25, 30: 0.5, 60: 1, 180: 3, 300: 5, 600: 10}
+        #     period = col.selectbox("Select period (min):", options=periods.keys(), format_func=lambda x: periods[x])
+        #
+        #     calc_by_period(username, url, period, periods, duco_price)
+        #
+        #     st.form_submit_button("Calculate")
 
     elif type_u[:1] == "2":
         st.write("Under Construction ... 🚧")
