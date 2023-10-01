@@ -64,7 +64,10 @@ def main():
 
     st.sidebar.markdown("[project repo](https://github.com/data-if/duco)")
 
-    if type_r[:1] == "1":
+    if type_r[:2] == "10":
+        transaction.main(username, url)
+
+    elif type_r[:1] == "1":
         user_data.main(username, url)
 
     elif type_r[:1] == "2":
@@ -90,9 +93,6 @@ def main():
 
     elif type_r[:1] == "9":
         auth.main(username, url)
-
-    elif type_r[:2] == "10":
-        transaction.main(username, url)
 
 
 if __name__ == "__main__":
