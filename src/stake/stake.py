@@ -5,7 +5,7 @@ import requests
 def main(username, url):
     with st.form("stake"):
         st.subheader("Stake")
-        amount = st.number_input("Stake amount:", min_value=1, value=100, step=1)
+        amount = st.number_input("Stake amount:", min_value=20, value=100, step=1)
         pwd = st.text_input("Password:", type="password")
 
         if st.form_submit_button("Stake"):
