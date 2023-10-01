@@ -91,10 +91,9 @@ def main():
     elif type_r[:1] == "9":
         auth.main(username, url)
 
-    elif type_r[:1] == "10":
+    elif type_r[:2] == "10":
         transaction.main(username, url)
 
 
 if __name__ == "__main__":
     main()
-
