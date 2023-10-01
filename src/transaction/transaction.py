@@ -13,7 +13,7 @@ def main(username, url):
         if st.form_submit_button("Make Transaction"):
             query_params = {
                 "username": username,
-                "unhashed_pass": pwd,
+                "password": pwd,
                 "recipient": recipient,
                 "amount": amount,
                 "memo": memo,
